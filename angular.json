@@ -1,0 +1,1523 @@
+{
+  "version": 1,
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "defaultProject": "tunierplanner-mono",
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "projects": {
+    "api": {
+      "root": "apps/api",
+      "sourceRoot": "apps/api/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "outputPath": "dist/apps/api",
+            "main": "apps/api/src/main.ts",
+            "tsConfig": "apps/api/tsconfig.app.json",
+            "assets": [
+              "apps/api/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/api/src/environments/environment.ts",
+                  "with": "apps/api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "api:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/api/**/*.ts"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/api"
+          ],
+          "options": {
+            "jestConfig": "apps/api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "matches": {
+      "projectType": "application",
+      "root": "apps/matches",
+      "sourceRoot": "apps/matches/src",
+      "prefix": "tunierplanner",
+      "architect": {
+        "build": {
+          "builder": "ngx-build-plus:browser",
+          "options": {
+            "outputPath": "dist/apps/matches",
+            "index": "apps/matches/src/index.html",
+            "main": "apps/matches/src/main.ts",
+            "polyfills": "apps/matches/src/polyfills.ts",
+            "tsConfig": "apps/matches/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "apps/matches/src/favicon.ico",
+              "apps/matches/src/assets"
+            ],
+            "styles": [
+              "apps/matches/src/styles.scss"
+            ],
+            "scripts": [],
+            "extraWebpackConfig": "apps/matches/webpack.config.js",
+            "commonChunk": false
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/matches/src/environments/environment.ts",
+                  "with": "apps/matches/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "extraWebpackConfig": "apps/matches/webpack.prod.config.js"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "ngx-build-plus:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "matches:build:production",
+              "extraWebpackConfig": "apps/matches/webpack.prod.config.js"
+            },
+            "development": {
+              "browserTarget": "matches:build:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {
+            "extraWebpackConfig": "apps/matches/webpack.config.js",
+            "port": 4204
+          }
+        },
+        "extract-i18n": {
+          "builder": "ngx-build-plus:extract-i18n",
+          "options": {
+            "browserTarget": "matches:build",
+            "extraWebpackConfig": "apps/matches/webpack.config.js"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/matches/src/**/*.ts",
+              "apps/matches/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        },
+        "test": {
+          "builder": "ngx-build-plus:karma",
+          "outputs": [
+            "coverage/apps/matches"
+          ],
+          "options": {
+            "jestConfig": "apps/matches/jest.config.js",
+            "passWithNoTests": true,
+            "extraWebpackConfig": "apps/matches/webpack.config.js"
+          }
+        }
+      }
+    },
+    "matches-domain": {
+      "projectType": "library",
+      "root": "libs/matches/domain",
+      "sourceRoot": "libs/matches/domain/src",
+      "prefix": "matches",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/matches/domain/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/matches/domain/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/matches/domain/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/matches/domain"
+          ],
+          "options": {
+            "jestConfig": "libs/matches/domain/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/matches/domain/src/**/*.ts",
+              "libs/matches/domain/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "matches-e2e": {
+      "root": "apps/matches-e2e",
+      "sourceRoot": "apps/matches-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/matches-e2e/cypress.json",
+            "tsConfig": "apps/matches-e2e/tsconfig.e2e.json",
+            "devServerTarget": "matches:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "matches:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/matches-e2e/**/*.{js,ts}"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "matches-feature-matches-filter": {
+      "projectType": "library",
+      "root": "libs/matches/feature-matches-filter",
+      "sourceRoot": "libs/matches/feature-matches-filter/src",
+      "prefix": "matches",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/matches/feature-matches-filter/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/matches/feature-matches-filter/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/matches/feature-matches-filter/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/matches/feature-matches-filter"
+          ],
+          "options": {
+            "jestConfig": "libs/matches/feature-matches-filter/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/matches/feature-matches-filter/src/**/*.ts",
+              "libs/matches/feature-matches-filter/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "matches-feature-matches-list": {
+      "projectType": "library",
+      "root": "libs/matches/feature-matches-list",
+      "sourceRoot": "libs/matches/feature-matches-list/src",
+      "prefix": "matches",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/matches/feature-matches-list/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/matches/feature-matches-list/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/matches/feature-matches-list/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/matches/feature-matches-list"
+          ],
+          "options": {
+            "jestConfig": "libs/matches/feature-matches-list/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/matches/feature-matches-list/src/**/*.ts",
+              "libs/matches/feature-matches-list/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "matches-matches-api": {
+      "projectType": "library",
+      "root": "libs/matches/matches-api",
+      "sourceRoot": "libs/matches/matches-api/src",
+      "prefix": "tunierplanner",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/matches/matches-api/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/matches/matches-api/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/matches/matches-api/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/matches/matches-api"
+          ],
+          "options": {
+            "jestConfig": "libs/matches/matches-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/matches/matches-api/src/**/*.ts",
+              "libs/matches/matches-api/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "matches-ui": {
+      "projectType": "library",
+      "root": "libs/matches/ui",
+      "sourceRoot": "libs/matches/ui/src",
+      "prefix": "tunierplanner",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/matches/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/matches/ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/matches/ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/matches/ui"
+          ],
+          "options": {
+            "jestConfig": "libs/matches/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/matches/ui/src/**/*.ts",
+              "libs/matches/ui/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "mf-shell": {
+      "projectType": "application",
+      "root": "apps/mf-shell",
+      "sourceRoot": "apps/mf-shell/src",
+      "prefix": "mf-shell",
+      "architect": {
+        "build": {
+          "builder": "ngx-build-plus:browser",
+          "options": {
+            "outputPath": "dist/apps/mf-shell",
+            "index": "apps/mf-shell/src/index.html",
+            "main": "apps/mf-shell/src/main.ts",
+            "polyfills": "apps/mf-shell/src/polyfills.ts",
+            "tsConfig": "apps/mf-shell/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "apps/mf-shell/src/favicon.ico",
+              "apps/mf-shell/src/assets"
+            ],
+            "styles": [
+              "apps/mf-shell/src/styles.scss"
+            ],
+            "scripts": [],
+            "extraWebpackConfig": "apps/mf-shell/webpack.config.js",
+            "commonChunk": false
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/mf-shell/src/environments/environment.ts",
+                  "with": "apps/mf-shell/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "extraWebpackConfig": "apps/mf-shell/webpack.prod.config.js"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "ngx-build-plus:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "mf-shell:build:production",
+              "extraWebpackConfig": "apps/mf-shell/webpack.prod.config.js"
+            },
+            "development": {
+              "browserTarget": "mf-shell:build:development"
+            }
+          },
+          "options": {
+            "port": 4201,
+            "extraWebpackConfig": "apps/mf-shell/webpack.config.js"
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "ngx-build-plus:extract-i18n",
+          "options": {
+            "browserTarget": "mf-shell:build",
+            "extraWebpackConfig": "apps/mf-shell/webpack.config.js"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/mf-shell/src/**/*.ts",
+              "apps/mf-shell/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        },
+        "test": {
+          "builder": "ngx-build-plus:karma",
+          "outputs": [
+            "coverage/apps/mf-shell"
+          ],
+          "options": {
+            "jestConfig": "apps/mf-shell/jest.config.js",
+            "passWithNoTests": true,
+            "extraWebpackConfig": "apps/mf-shell/webpack.config.js"
+          }
+        }
+      }
+    },
+    "shared-ui": {
+      "projectType": "library",
+      "root": "libs/shared/ui",
+      "sourceRoot": "libs/shared/ui/src",
+      "prefix": "tunierplanner",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/shared/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/shared/ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/shared/ui"
+          ],
+          "options": {
+            "jestConfig": "libs/shared/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/ui/src/**/*.ts",
+              "libs/shared/ui/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "shared-utils": {
+      "projectType": "library",
+      "root": "libs/shared/utils",
+      "sourceRoot": "libs/shared/utils/src",
+      "prefix": "tunierplanner",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/shared/utils/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/utils/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/shared/utils/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/shared/utils"
+          ],
+          "options": {
+            "jestConfig": "libs/shared/utils/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/utils/src/**/*.ts",
+              "libs/shared/utils/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "teams": {
+      "projectType": "application",
+      "root": "apps/teams",
+      "sourceRoot": "apps/teams/src",
+      "prefix": "tunierplanner",
+      "architect": {
+        "build": {
+          "builder": "ngx-build-plus:browser",
+          "options": {
+            "outputPath": "dist/apps/teams",
+            "index": "apps/teams/src/index.html",
+            "main": "apps/teams/src/main.ts",
+            "polyfills": "apps/teams/src/polyfills.ts",
+            "tsConfig": "apps/teams/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "apps/teams/src/favicon.ico",
+              "apps/teams/src/assets"
+            ],
+            "styles": [
+              "apps/teams/src/styles.scss"
+            ],
+            "scripts": [],
+            "extraWebpackConfig": "apps/teams/webpack.config.js",
+            "commonChunk": false
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/teams/src/environments/environment.ts",
+                  "with": "apps/teams/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "extraWebpackConfig": "apps/teams/webpack.prod.config.js"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "ngx-build-plus:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "teams:build:production",
+              "extraWebpackConfig": "apps/teams/webpack.prod.config.js"
+            },
+            "development": {
+              "browserTarget": "teams:build:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {
+            "extraWebpackConfig": "apps/teams/webpack.config.js",
+            "port": 4202
+          }
+        },
+        "extract-i18n": {
+          "builder": "ngx-build-plus:extract-i18n",
+          "options": {
+            "browserTarget": "teams:build",
+            "extraWebpackConfig": "apps/teams/webpack.config.js"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/teams/src/**/*.ts",
+              "apps/teams/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        },
+        "test": {
+          "builder": "ngx-build-plus:karma",
+          "outputs": [
+            "coverage/apps/teams"
+          ],
+          "options": {
+            "jestConfig": "apps/teams/jest.config.js",
+            "passWithNoTests": true,
+            "extraWebpackConfig": "apps/teams/webpack.config.js"
+          }
+        }
+      }
+    },
+    "teams-domain": {
+      "projectType": "library",
+      "root": "libs/teams/domain",
+      "sourceRoot": "libs/teams/domain/src",
+      "prefix": "teams",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/teams/domain/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/teams/domain/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/teams/domain/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/teams/domain"
+          ],
+          "options": {
+            "jestConfig": "libs/teams/domain/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/teams/domain/src/**/*.ts",
+              "libs/teams/domain/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "teams-e2e": {
+      "root": "apps/teams-e2e",
+      "sourceRoot": "apps/teams-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/teams-e2e/cypress.json",
+            "tsConfig": "apps/teams-e2e/tsconfig.e2e.json",
+            "devServerTarget": "teams:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "teams:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/teams-e2e/**/*.{js,ts}"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "teams-feature-teams-add": {
+      "projectType": "library",
+      "root": "libs/teams/feature-teams-add",
+      "sourceRoot": "libs/teams/feature-teams-add/src",
+      "prefix": "teams",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/teams/feature-teams-add/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/teams/feature-teams-add/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/teams/feature-teams-add/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/teams/feature-teams-add"
+          ],
+          "options": {
+            "jestConfig": "libs/teams/feature-teams-add/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/teams/feature-teams-add/src/**/*.ts",
+              "libs/teams/feature-teams-add/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "teams-feature-teams-detail": {
+      "projectType": "library",
+      "root": "libs/teams/feature-teams-detail",
+      "sourceRoot": "libs/teams/feature-teams-detail/src",
+      "prefix": "teams",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/teams/feature-teams-detail/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/teams/feature-teams-detail/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/teams/feature-teams-detail/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/teams/feature-teams-detail"
+          ],
+          "options": {
+            "jestConfig": "libs/teams/feature-teams-detail/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/teams/feature-teams-detail/src/**/*.ts",
+              "libs/teams/feature-teams-detail/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "teams-feature-teams-list": {
+      "projectType": "library",
+      "root": "libs/teams/feature-teams-list",
+      "sourceRoot": "libs/teams/feature-teams-list/src",
+      "prefix": "teams",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/teams/feature-teams-list/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/teams/feature-teams-list/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/teams/feature-teams-list/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/teams/feature-teams-list"
+          ],
+          "options": {
+            "jestConfig": "libs/teams/feature-teams-list/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/teams/feature-teams-list/src/**/*.ts",
+              "libs/teams/feature-teams-list/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "teams-teams-api": {
+      "projectType": "library",
+      "root": "libs/teams/teams-api",
+      "sourceRoot": "libs/teams/teams-api/src",
+      "prefix": "tunierplanner",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/teams/teams-api/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/teams/teams-api/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/teams/teams-api/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/teams/teams-api"
+          ],
+          "options": {
+            "jestConfig": "libs/teams/teams-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/teams/teams-api/src/**/*.ts",
+              "libs/teams/teams-api/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "teams-ui": {
+      "projectType": "library",
+      "root": "libs/teams/ui",
+      "sourceRoot": "libs/teams/ui/src",
+      "prefix": "tunierplanner",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/teams/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/teams/ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/teams/ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/teams/ui"
+          ],
+          "options": {
+            "jestConfig": "libs/teams/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/teams/ui/src/**/*.ts",
+              "libs/teams/ui/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "tunier": {
+      "projectType": "application",
+      "root": "apps/tunier",
+      "sourceRoot": "apps/tunier/src",
+      "prefix": "tunierplanner",
+      "architect": {
+        "build": {
+          "builder": "ngx-build-plus:browser",
+          "options": {
+            "outputPath": "dist/apps/tunier",
+            "index": "apps/tunier/src/index.html",
+            "main": "apps/tunier/src/main.ts",
+            "polyfills": "apps/tunier/src/polyfills.ts",
+            "tsConfig": "apps/tunier/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "apps/tunier/src/favicon.ico",
+              "apps/tunier/src/assets"
+            ],
+            "styles": [
+              "apps/tunier/src/styles.scss"
+            ],
+            "scripts": [],
+            "extraWebpackConfig": "apps/tunier/webpack.config.js",
+            "commonChunk": false
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/tunier/src/environments/environment.ts",
+                  "with": "apps/tunier/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "extraWebpackConfig": "apps/tunier/webpack.prod.config.js"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "ngx-build-plus:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "tunier:build:production",
+              "extraWebpackConfig": "apps/tunier/webpack.prod.config.js"
+            },
+            "development": {
+              "browserTarget": "tunier:build:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {
+            "extraWebpackConfig": "apps/tunier/webpack.config.js",
+            "port": 4203
+          }
+        },
+        "extract-i18n": {
+          "builder": "ngx-build-plus:extract-i18n",
+          "options": {
+            "browserTarget": "tunier:build",
+            "extraWebpackConfig": "apps/tunier/webpack.config.js"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/tunier/src/**/*.ts",
+              "apps/tunier/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        },
+        "test": {
+          "builder": "ngx-build-plus:karma",
+          "outputs": [
+            "coverage/apps/tunier"
+          ],
+          "options": {
+            "jestConfig": "apps/tunier/jest.config.js",
+            "passWithNoTests": true,
+            "extraWebpackConfig": "apps/tunier/webpack.config.js"
+          }
+        }
+      }
+    },
+    "tunier-domain": {
+      "projectType": "library",
+      "root": "libs/tunier/domain",
+      "sourceRoot": "libs/tunier/domain/src",
+      "prefix": "tunier",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/tunier/domain/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/tunier/domain/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/tunier/domain/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/tunier/domain"
+          ],
+          "options": {
+            "jestConfig": "libs/tunier/domain/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/tunier/domain/src/**/*.ts",
+              "libs/tunier/domain/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "tunier-e2e": {
+      "root": "apps/tunier-e2e",
+      "sourceRoot": "apps/tunier-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/tunier-e2e/cypress.json",
+            "tsConfig": "apps/tunier-e2e/tsconfig.e2e.json",
+            "devServerTarget": "tunier:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "tunier:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/tunier-e2e/**/*.{js,ts}"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "tunier-feature-group": {
+      "projectType": "library",
+      "root": "libs/tunier/feature-group",
+      "sourceRoot": "libs/tunier/feature-group/src",
+      "prefix": "tunier",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/tunier/feature-group/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/tunier/feature-group/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/tunier/feature-group/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/tunier/feature-group"
+          ],
+          "options": {
+            "jestConfig": "libs/tunier/feature-group/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/tunier/feature-group/src/**/*.ts",
+              "libs/tunier/feature-group/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "tunier-feature-group-matches": {
+      "projectType": "library",
+      "root": "libs/tunier/feature-group-matches",
+      "sourceRoot": "libs/tunier/feature-group-matches/src",
+      "prefix": "tunier",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/tunier/feature-group-matches/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/tunier/feature-group-matches/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/tunier/feature-group-matches/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/tunier/feature-group-matches"
+          ],
+          "options": {
+            "jestConfig": "libs/tunier/feature-group-matches/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/tunier/feature-group-matches/src/**/*.ts",
+              "libs/tunier/feature-group-matches/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "tunier-ui": {
+      "projectType": "library",
+      "root": "libs/tunier/ui",
+      "sourceRoot": "libs/tunier/ui/src",
+      "prefix": "tunierplanner",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "project": "libs/tunier/ui/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/tunier/ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/tunier/ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/tunier/ui"
+          ],
+          "options": {
+            "jestConfig": "libs/tunier/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/tunier/ui/src/**/*.ts",
+              "libs/tunier/ui/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    },
+    "tunierplanner-mono": {
+      "projectType": "application",
+      "root": "apps/tunierplanner-mono",
+      "sourceRoot": "apps/tunierplanner-mono/src",
+      "prefix": "tunierplanner",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/tunierplanner-mono",
+            "index": "apps/tunierplanner-mono/src/index.html",
+            "main": "apps/tunierplanner-mono/src/main.ts",
+            "polyfills": "apps/tunierplanner-mono/src/polyfills.ts",
+            "tsConfig": "apps/tunierplanner-mono/tsconfig.app.json",
+            "assets": [
+              "apps/tunierplanner-mono/src/favicon.ico",
+              "apps/tunierplanner-mono/src/assets"
+            ],
+            "styles": [
+              "apps/tunierplanner-mono/src/styles.scss"
+            ],
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/tunierplanner-mono/src/environments/environment.ts",
+                  "with": "apps/tunierplanner-mono/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "tunierplanner-mono:build",
+            "port": 4200
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "tunierplanner-mono:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "tunierplanner-mono:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/tunierplanner-mono/src/**/*.ts",
+              "apps/tunierplanner-mono/src/**/*.html"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/tunierplanner-mono"
+          ],
+          "options": {
+            "jestConfig": "apps/tunierplanner-mono/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "tunierplanner-mono-e2e": {
+      "root": "apps/tunierplanner-mono-e2e",
+      "sourceRoot": "apps/tunierplanner-mono-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/tunierplanner-mono-e2e/cypress.json",
+            "tsConfig": "apps/tunierplanner-mono-e2e/tsconfig.e2e.json",
+            "devServerTarget": "tunierplanner-mono:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "tunierplanner-mono:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/tunierplanner-mono-e2e/**/*.{js,ts}"
+            ]
+          },
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    }
+  }
+}

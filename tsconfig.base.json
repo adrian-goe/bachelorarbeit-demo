@@ -1,0 +1,55 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@tunierplanner/matches/domain": ["libs/matches/domain/src/index.ts"],
+      "@tunierplanner/matches/feature-matches-filter": [
+        "libs/matches/feature-matches-filter/src/index.ts"
+      ],
+      "@tunierplanner/matches/feature-matches-list": [
+        "libs/matches/feature-matches-list/src/index.ts"
+      ],
+      "@tunierplanner/matches/matches-api": [
+        "libs/matches/matches-api/src/index.ts"
+      ],
+      "@tunierplanner/matches/ui": ["libs/matches/ui/src/index.ts"],
+      "@tunierplanner/shared/ui": ["libs/shared/ui/src/index.ts"],
+      "@tunierplanner/shared/utils": ["libs/shared/utils/src/index.ts"],
+      "@tunierplanner/teams/domain": ["libs/teams/domain/src/index.ts"],
+      "@tunierplanner/teams/feature-teams-add": [
+        "libs/teams/feature-teams-add/src/index.ts"
+      ],
+      "@tunierplanner/teams/feature-teams-detail": [
+        "libs/teams/feature-teams-detail/src/index.ts"
+      ],
+      "@tunierplanner/teams/feature-teams-list": [
+        "libs/teams/feature-teams-list/src/index.ts"
+      ],
+      "@tunierplanner/teams/teams-api": ["libs/teams/teams-api/src/index.ts"],
+      "@tunierplanner/teams/ui": ["libs/teams/ui/src/index.ts"],
+      "@tunierplanner/tunier/domain": ["libs/tunier/domain/src/index.ts"],
+      "@tunierplanner/tunier/feature-group": [
+        "libs/tunier/feature-group/src/index.ts"
+      ],
+      "@tunierplanner/tunier/feature-group-matches": [
+        "libs/tunier/feature-group-matches/src/index.ts"
+      ],
+      "@tunierplanner/tunier/ui": ["libs/tunier/ui/src/index.ts"]
+    },
+    "types": ["firebase"]
+  },
+  "exclude": ["node_modules", "tmp"]
+}

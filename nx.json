@@ -1,0 +1,120 @@
+{
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.base.json": "*",
+    "tslint.json": "*",
+    ".eslintrc.json": "*",
+    "nx.json": "*"
+  },
+  "affected": {
+    "defaultBase": "master"
+  },
+  "npmScope": "tunierplanner",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
+    }
+  },
+  "projects": {
+    "api": {
+      "tags": []
+    },
+    "matches": {
+      "tags": ["domain:matches", "type:app"]
+    },
+    "matches-domain": {
+      "tags": ["domain:matches", "type:domain-logic"]
+    },
+    "matches-e2e": {
+      "tags": [],
+      "implicitDependencies": ["matches"]
+    },
+    "matches-feature-matches-filter": {
+      "tags": ["domain:matches", "type:feature"]
+    },
+    "matches-feature-matches-list": {
+      "tags": ["domain:matches", "type:feature"]
+    },
+    "matches-matches-api": {
+      "tags": ["domain:shared", "type:api"]
+    },
+    "matches-ui": {
+      "tags": ["domain:matches", "type:ui"]
+    },
+    "mf-shell": {
+      "tags": ["domain:mf-shell", "type:app"]
+    },
+    "shared-ui": {
+      "tags": ["domain:shared", "type:ui"]
+    },
+    "shared-utils": {
+      "tags": ["domain:shared", "type:util"]
+    },
+    "teams": {
+      "tags": ["domain:teams", "type:app"]
+    },
+    "teams-domain": {
+      "tags": ["domain:teams", "type:domain-logic"]
+    },
+    "teams-e2e": {
+      "tags": [],
+      "implicitDependencies": ["teams"]
+    },
+    "teams-feature-teams-add": {
+      "tags": ["domain:teams", "type:feature"]
+    },
+    "teams-feature-teams-detail": {
+      "tags": ["domain:teams", "type:feature"]
+    },
+    "teams-feature-teams-list": {
+      "tags": ["domain:teams", "type:feature"]
+    },
+    "teams-teams-api": {
+      "tags": ["domain:shared", "type:api"]
+    },
+    "teams-ui": {
+      "tags": ["domain:teams", "type:ui"]
+    },
+    "tunier": {
+      "tags": ["domain:tunier", "type:app"]
+    },
+    "tunier-domain": {
+      "tags": ["domain:tunier", "type:domain-logic"]
+    },
+    "tunier-e2e": {
+      "tags": [],
+      "implicitDependencies": ["tunier"]
+    },
+    "tunier-feature-group": {
+      "tags": ["domain:tunier", "type:feature"]
+    },
+    "tunier-feature-group-matches": {
+      "tags": ["domain:tunier", "type:feature"]
+    },
+    "tunier-ui": {
+      "tags": ["domain:tunier", "type:ui"]
+    },
+    "tunierplanner-mono": {
+      "tags": []
+    },
+    "tunierplanner-mono-e2e": {
+      "tags": [],
+      "implicitDependencies": ["tunierplanner-mono"]
+    }
+  },
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+<div class="fixed z-10 top-2/4 left-2/4 transform -translate-y-1/2 -translate-x-1/2">
+  <div class="w-96 bg-white rounded-md shadow-2xl px-4 py-8 border border-gray-100">
+
+
+    <span class="text-2xl font-medium">Add team</span>
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="mt-4">
+
+        <div class="flex flex-col mt-2">
+          <label for="teamName" class="text-gray-600">Team Name</label>
+          <input class="rounded-md" id="teamName" formControlName="teamName" type="text">
+        </div>
+        <div class="flex flex-col mt-2">
+          <label for="teamCity" class="text-gray-600">Stadt</label>
+          <input class="rounded-md" id="teamCity" formControlName="teamCity" type="text">
+        </div>
+        <div class="flex flex-col mt-2">
+          <label for="teamTrainer" class="text-gray-600">Trainer</label>
+          <input class="rounded-md" id="teamTrainer" formControlName="teamTrainer" type="text">
+        </div>
+      </div>
+      <div class="mt-6 flex justify-between">
+        <button
+          (click)="close()"
+          class="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-400 mb-2"
+        >Cancel
+        </button>
+
+        <button
+          type="submit"
+          class=" py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-400 mb-2
+        "
+        >Add team
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

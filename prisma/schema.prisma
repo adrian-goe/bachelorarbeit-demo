@@ -1,0 +1,104 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Team {
+  id      String @id @default(uuid())
+  name    String
+  trainer String
+  ort     String
+
+  homeMatchs     Match[] @relation("HomeMatch")
+  externalMatchs Match[] @relation("ExternalMatch")
+
+  @@map("team")
+  Group   Group?  @relation(fields: [groupId], references: [id])
+  groupId String?
+}
+
+model Tunier {
+  id           String       @id @default(uuid())
+  groups       Group[]
+  quaterFinals QuaterFinals? @relation(fields: [quaterFinalsId], references: [id])
+  halfFinals   HalfFinals?   @relation(fields: [halfFinalsId], references: [id])
+  final        Match?        @relation(fields: [matchId], references: [id])
+
+  @@map("tunier")
+  quaterFinalsId String?
+  halfFinalsId   String?
+  matchId        String?
+}
+
+model Group {
+  id           String  @id @default(uuid())
+  teams        Team[]
+  groupMatches Match[]
+
+  @@map("group")
+  Tunier   Tunier? @relation(fields: [tunierId], references: [id])
+  tunierId String?
+}
+
+model QuaterFinals {
+  id      String  @id @default(uuid())
+  matches Match[]
+
+  @@map("quater_finals")
+  Tunier Tunier[]
+}
+
+model HalfFinals {
+  id      String  @id @default(uuid())
+  matches Match[]
+
+  @@map("half_finals")
+  Tunier Tunier[]
+}
+
+model Match {
+  id             String  @id @default(uuid())
+  teamOne        Team    @relation("HomeMatch", fields: [teamOneId], references: [id])
+  teamTwo        Team    @relation("ExternalMatch", fields: [teamTwoId], references: [id])
+  teamOneId      String  @map("team_one_id")
+  teamTwoId      String  @map("team_two_id")
+  teamOneGoals   Int     @default(0)
+  teamTwoGoals   Int     @default(0)
+  hasPlayed      Boolean @default(false)
+  Tunier         Tunier[]
+  Group          Group?        @relation(fields: [groupId], references: [id])
+  groupId        String?
+  QuaterFinals   QuaterFinals? @relation(fields: [quaterFinalsId], references: [id])
+  quaterFinalsId String?
+  HalfFinals     HalfFinals?   @relation(fields: [halfFinalsId], references: [id])
+  halfFinalsId   String?
+
+
+  @@unique([groupId,teamOneId,teamTwoId],name:"group_teams_uix")
+  @@map("match")
+}
+
+//export interface TunierType {
+//  groups: Group[];
+//  quaterFinals?: MatchType[];
+//  halfFinals?: MatchType[];
+//  final?: MatchType;
+//}
+//
+//export interface Group {
+//  group: GroupPlace[];
+//  groupMatches: MatchType[];
+//}
+//
+//export interface GroupPlace {
+//  points: number;
+//  goals: number;
+//  team: Team;
+//}

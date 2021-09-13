@@ -1,0 +1,18 @@
+<div class="w-screen h-screen bg-white flex">
+
+  <nav class="w-1/6 h-screen border-r border-gray-400 flex flex-col  py-12">
+    <ng-container *ngFor="let route of routes">
+      <a class="mt-4 flex flex-row items-center" [routerLink]="route.path">
+        <span routerLinkActive="border-red-400"
+              class="border-r-4 rounded-tr-lg rounded-br-lg border-white h-full inline-block"></span>
+        <span class="px-8 text-lg">{{route.name}}</span>
+      </a>
+    </ng-container>
+  </nav>
+
+  <div class="h-screen w-full px-20 w-auto py-12 bg-gray-100">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>
+

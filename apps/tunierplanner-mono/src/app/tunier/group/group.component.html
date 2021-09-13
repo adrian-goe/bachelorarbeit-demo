@@ -1,0 +1,17 @@
+<div class="w-full bg-white py-2  rounded-md	my-2">
+  <div id="header" class="flex justify-between text-gray-500 text-sm px-4">
+    <div class="w-1/3">Team</div>
+    <div class="w-1/3">Goals</div>
+    <div class="w-1/3">Points</div>
+  </div>
+  <div id="body" class="w-full mt-2 ">
+    <ng-container class="w-full" *ngFor="let place of group; let i = index">
+      <div class="flex justify-between py-2 hover:bg-gray-100 px-4"
+           [ngClass]="{'border-b-2':group.length-1!==i }">
+        <div class="w-1/3">{{place.team.name}}</div>
+        <div class="w-1/3">{{place.shootGoals}}:{{place.gotGoals}}</div>
+        <div class="w-1/3">{{place.points}}</div>
+      </div>
+    </ng-container>
+  </div>
+</div>

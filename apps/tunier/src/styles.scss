@@ -1,0 +1,13 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+
+.teams-thumbnail {
+  @apply h-12 w-12 flex flex-col justify-center items-center rounded-full text-white text-2xl
+}
+
+.h-screen-88 {
+  height: 88vh;
+}
+
+@import 'tailwindcss/utilities';
+/* You can add global styles to this file, and also import other style files */

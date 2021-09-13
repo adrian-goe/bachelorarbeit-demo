@@ -1,0 +1,9 @@
+<div class="w-full bg-white py-2 rounded-md	my-2">
+  <div class="flex justify-between items-center px-4">
+    <tunierplanner-team-icon-name [teamName]="match.teamOne.name" placement="left"></tunierplanner-team-icon-name>
+    <input class="border-0 text-center w-12" value="{{match.teamOneGoals}}" (blur)="updateScore(0,$event)" type="text">
+    <span>:</span>
+    <input class="border-0 text-center w-12" value="{{match.teamTwoGoals}}" (blur)="updateScore(1,$event)" type="text">
+    <tunierplanner-team-icon-name [teamName]="match.teamTwo.name" placement="right"></tunierplanner-team-icon-name>
+  </div>
+</div>

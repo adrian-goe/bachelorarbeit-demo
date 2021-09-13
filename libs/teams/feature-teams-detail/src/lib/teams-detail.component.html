@@ -1,0 +1,10 @@
+<div class="w-full relative">
+  <div class="flex justify-between items-center	mb-4">
+    <span class="text-4xl">Team Detail: {{team.name}}</span>
+    <button
+      class="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-400"
+      (click)="back()">back
+    </button>
+  </div>
+  <teams-team-detail [team]="team"></teams-team-detail>
+</div>

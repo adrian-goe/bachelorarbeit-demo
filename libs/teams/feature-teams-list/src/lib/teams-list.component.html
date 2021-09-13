@@ -1,0 +1,18 @@
+<div class="w-full relative">
+  <div class="flex justify-between items-center	mb-4">
+    <span class="text-4xl">Teams</span>
+    <button
+      class="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-400"
+      (click)="openAddTeam()">add team
+    </button>
+  </div>
+  <teams-team-list [teams]="teams$ | async" (selectedTeam)="selectTeam($event)"></teams-team-list>
+  <teams-teams-add [ngClass]="{ 'hidden': isClosed, 'visible': !isClosed}"
+                   (createTeam)="createTeam($event)"
+                   (closeAdd)="closeAddTeam()"
+
+  >
+
+  </teams-teams-add>
+
+</div>

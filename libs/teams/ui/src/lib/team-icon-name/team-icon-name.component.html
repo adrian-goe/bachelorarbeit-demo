@@ -1,0 +1,8 @@
+<div class="flex flex-shrink-0 pr-2 bg-red items-center"
+     [ngClass]="{ 'flex-row-reverse': placement==='right', 'flex-row' : placement==='left'||placement==='default' }">
+  <tunierplanner-team-logo class="mx-1 flex-shrink-0 mr-2 h-12 w-12" [name]="teamName"></tunierplanner-team-logo>
+  <div class="mx-1 flex flex-col  h-full">
+    <span class="text-gray-500 text-sm" *ngIf="placement==='default'">Team</span>
+    <span>{{teamName}}</span>
+  </div>
+</div>

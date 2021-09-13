@@ -1,0 +1,5 @@
+  <div class="w-full h-screen-88 overflow-y-scroll">
+    <div class="grid grid-cols-1 gap-0.5">
+      <tunierplanner-matches-match *ngFor="let match of matches$|async" [match]="match"></tunierplanner-matches-match>
+    </div>
+  </div>

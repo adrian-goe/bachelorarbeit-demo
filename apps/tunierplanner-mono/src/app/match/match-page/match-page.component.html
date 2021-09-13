@@ -1,0 +1,17 @@
+<div class="w-full relative">
+  <div class="flex justify-between items-center	mb-4">
+    <span class="text-4xl">Match History</span>
+    <div class="flex">
+      <input type="text" class="rounded-md mr-4" (blur)="serchTerm($event)" placeholder="Filter">
+      <button
+        class="py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-400"
+        (click)="resetFilter()">reset filter
+      </button>
+    </div>
+  </div>
+  <div class="w-full h-screen-88 overflow-y-scroll">
+    <div class="grid grid-cols-1 gap-0.5">
+      <tunierplanner-match *ngFor="let match of matches$|async" [match]="match"></tunierplanner-match>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<div class="grid grid-cols-2 gap-8">
+  <ng-container *ngFor="let group of groupPlaces$ | async; let i = index">
+    <div class="w-full">
+      <span class="text-xl text-gray-500">Group {{i + 1}}</span>
+      <tunierplanner-group [group]="group" class="w-full"></tunierplanner-group>
+    </div>
+  </ng-container>
+</div>
